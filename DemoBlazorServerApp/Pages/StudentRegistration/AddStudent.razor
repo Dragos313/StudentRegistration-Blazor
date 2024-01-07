@@ -1,0 +1,45 @@
+﻿@using DemoBlazorServerApp.Models
+@inject DatabaseContext dbContext
+
+<div class="row">
+    <div class="col-lg-4 pt-4">
+        <EditForm Model="_student" OnSubmit="Submit">
+            <div class="mb-3">
+                <label class="form-label">Specialization</label>
+                <select class="form-control" @bind="_student.SpecId">
+                    @foreach (var specialization in dbContext.Specs)
+                    {
+                        <option value="@specialization.SpecId">@specialization.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">User</label>
+                <select class="form-control" @bind="_student.UserId">
+                    @foreach (var user in dbContext.Users)
+                    {
+                        <option value="@user.UserId">@user.FullName</option>
+                    }
+                </select>
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-primary" type="submit">Save</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback OnStudentCreated { get; set; }
+
+    private StudentRegistration _student = new StudentRegistration();
+
+    public async Task Submit()
+    {
+        dbContext.Students.Add(_student);
+        await dbContext.SaveChangesAsync();
+        await OnStudentCreated.InvokeAsync();
+        _student = new StudentRegistration();
+    }
+}

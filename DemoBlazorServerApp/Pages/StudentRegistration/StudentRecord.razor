@@ -1,0 +1,26 @@
+﻿@using DemoBlazorServerApp.Models
+<tr>
+    <td>@RecordIndex</td>
+    <td>@Student.FullName</td>
+    <td>@Student.Email</td>
+    <td>@Student.Specialization</td>
+    <td>@Student.Tax</td>
+    <td>@Student.Years</td>
+    <td>@Student.RegisterDate</td>
+    <td>
+        <a href="javascript:void(0)" @onclick="(async () => await StudentDelete.InvokeAsync(Student))">
+            <i class="oi oi-trash"></i>
+        </a>
+    </td>
+</tr>
+
+@code {
+    [Parameter]
+    public int RecordIndex { get; set; }
+
+    [Parameter]
+    public StudentRegistration Student { get; set; }
+
+    [Parameter]
+    public EventCallback<StudentRegistration> StudentDelete { get; set; }
+}

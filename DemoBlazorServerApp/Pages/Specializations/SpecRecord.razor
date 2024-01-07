@@ -1,0 +1,24 @@
+﻿@using DemoBlazorServerApp.Models
+
+<tr>
+    <td>@RecordIndex</td>
+    <td>@Spec.Name</td>
+    <td>@Spec.Tax</td>
+    <td>@Spec.Years</td>
+    <td>
+        <a href="javascript:void(0)" @onclick="(async () => await SpecDelete.InvokeAsync(Spec))">
+            <i class="oi oi-trash"></i>
+        </a>
+    </td>
+</tr>
+
+@code {
+    [Parameter]
+    public int RecordIndex { get; set; }
+
+    [Parameter]
+    public Specialization Spec { get; set; }
+
+    [Parameter]
+    public EventCallback<Specialization> SpecDelete { get; set; }
+}

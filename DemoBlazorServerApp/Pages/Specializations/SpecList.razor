@@ -1,0 +1,30 @@
+﻿@using DemoBlazorServerApp.Models
+
+@if (Specs is not null || Specs.Count != 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Name</th>
+                <th>Annual tax</th>
+                <th>Years</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Specs.Count; i++)
+            {
+                <SpecRecord RecordIndex=(i+1) Spec="@Specs[i]" SpecDelete="SpecDelete"></SpecRecord>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public List<Specialization> Specs { get; set; }
+
+    [Parameter]
+    public EventCallback<Specialization> SpecDelete { get; set; }
+}

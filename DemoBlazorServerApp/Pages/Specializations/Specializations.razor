@@ -1,0 +1,39 @@
+﻿@page "/specializations"
+@using DemoBlazorServerApp.Models
+@inject DatabaseContext dbContext
+
+<ul class="nav nav-tabs" id="users-tab-nav" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-controls="users" aria-selected="true">Specializations</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="add-user-tab" data-bs-toggle="tab" data-bs-target="#add-user" type="button" role="tab" aria-controls="add-user" aria-selected="false">Add Specialization</button>
+    </li>
+</ul>
+<div class="tab-content" id="users-tab-content">
+    <div class="tab-pane fade show active" id="users" role="tabpanel" aria-labelledby="users-tab">
+        <SpecList Specs="_spec" SpecDelete="DeleteSpec" />
+    </div>
+    <div class="tab-pane fade" id="add-user" role="tabpanel" aria-labelledby="add-user-tab">
+        <AddSpec OnSpecCreated="FetchSpecs" />
+    </div>
+</div>
+
+@code{
+    private List<Specialization> _spec;
+
+    protected override void OnInitialized()
+    {
+        FetchSpecs();
+        base.OnInitialized();
+    }
+
+    private void FetchSpecs() => _spec = dbContext.Specs.ToList();
+
+    public async Task DeleteSpec(Specialization spec)
+    {
+        dbContext.Specs.Remove(spec);
+        await dbContext.SaveChangesAsync();
+        FetchSpecs();
+    }
+}

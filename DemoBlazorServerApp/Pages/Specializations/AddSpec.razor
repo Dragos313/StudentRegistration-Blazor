@@ -1,0 +1,39 @@
+﻿@using DemoBlazorServerApp.Models
+@inject DatabaseContext dbContext
+
+<div class="row">
+    <div class="col-lg-4 pt-4">
+        <EditForm Model="_spec" OnSubmit="Submit">
+            <div class="mb-3">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-control" @bind-value="_spec.Name">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Annual Tax</label>
+                <input type="text" class="form-control" @bind-value="_spec.Tax">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Years</label>
+                <input type="text" class="form-control" @bind-value="_spec.Years">
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-primary" type="submit">Save</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback OnSpecCreated { get; set; }
+
+    private Specialization _spec = new Specialization();
+
+    public async Task Submit()
+    {
+        dbContext.Specs.Add(_spec);
+        await dbContext.SaveChangesAsync();
+        await OnSpecCreated.InvokeAsync();
+        _spec = new Specialization();
+    }
+}
