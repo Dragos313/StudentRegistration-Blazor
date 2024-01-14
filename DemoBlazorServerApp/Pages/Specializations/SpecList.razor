@@ -1,6 +1,6 @@
 ﻿@using DemoBlazorServerApp.Models
 
-@if (Specs is not null || Specs.Count != 0)
+@if (Specs is not null || Specs.Count > 0)
 {
     <table class="table">
         <thead>
@@ -9,17 +9,20 @@
                 <th>Name</th>
                 <th>Annual tax</th>
                 <th>Years</th>
-                <th></th>
+                <th>Modify</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
             @for (int i = 0; i < Specs.Count; i++)
             {
-                <SpecRecord RecordIndex=(i+1) Spec="@Specs[i]" SpecDelete="SpecDelete"></SpecRecord>
+                <SpecRecord RecordIndex=(i+1) Spec="@Specs[i]" SpecModify="SpecModify" SpecDelete="SpecDelete"></SpecRecord>
             }
         </tbody>
     </table>
 }
+
+
 
 @code {
     [Parameter]
@@ -27,4 +30,8 @@
 
     [Parameter]
     public EventCallback<Specialization> SpecDelete { get; set; }
+
+    [Parameter]
+    public EventCallback<Specialization> SpecModify { get; set; }
 }
+

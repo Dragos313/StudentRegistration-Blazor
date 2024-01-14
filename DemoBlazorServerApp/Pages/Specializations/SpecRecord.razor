@@ -1,16 +1,43 @@
 ﻿@using DemoBlazorServerApp.Models
 
-<tr>
-    <td>@RecordIndex</td>
-    <td>@Spec.Name</td>
-    <td>@Spec.Tax</td>
-    <td>@Spec.Years</td>
-    <td>
-        <a href="javascript:void(0)" @onclick="(async () => await SpecDelete.InvokeAsync(Spec))">
-            <i class="oi oi-trash"></i>
-        </a>
-    </td>
-</tr>
+@if (!EditMode)
+{
+    <tr>
+        <td>@RecordIndex</td>
+        <td>@Spec.Name</td>
+        <td>@Spec.Tax</td>
+        <td>@Spec.Years</td>
+        <td>
+            <button class="btn btn-link" @onclick="EnableEditMode">
+                <i class="oi oi-pencil"></i>
+            </button>
+        </td>
+        <td>
+            <button class="btn btn-link" @onclick="(async () => await SpecDelete.InvokeAsync(Spec))">
+                <i class="oi oi-trash"></i>
+            </button>
+        </td>
+    </tr>
+}
+else
+{
+    <tr>
+        <td>@RecordIndex</td>
+        <td><input type="text" @bind="_editedSpec.Name" class="form-control" /></td>
+        <td><input type="text" @bind="_editedSpec.Tax" class="form-control" /></td>
+        <td><input type="text" @bind="_editedSpec.Years" class="form-control" /></td>
+        <td>
+            <button class="btn btn-link" @onclick="SaveChanges">
+                <i class="oi oi-check"></i>
+            </button>
+        </td>
+        <td>
+            <button class="btn btn-link" @onclick="CancelEdit">
+                <i class="oi oi-x"></i>
+            </button>
+        </td>
+    </tr>
+}
 
 @code {
     [Parameter]
@@ -21,4 +48,40 @@
 
     [Parameter]
     public EventCallback<Specialization> SpecDelete { get; set; }
+
+    [Parameter]
+    public EventCallback<Specialization> SpecModify { get; set; }
+
+    private bool EditMode { get; set; } = false;
+
+    private Specialization _editedSpec;
+
+    private void EnableEditMode()
+    {
+        _editedSpec = new Specialization
+            {
+                Name = Spec.Name,
+                Tax = Spec.Tax,
+                Years = Spec.Years
+            };
+        EditMode = true;
+    }
+
+    private void SaveChanges()
+    {
+        Spec.Name = _editedSpec.Name;
+        Spec.Tax = _editedSpec.Tax;
+        Spec.Years = _editedSpec.Years;
+
+        SpecModify.InvokeAsync(Spec);
+
+        EditMode = false;
+        _editedSpec = null;
+    }
+
+    private void CancelEdit()
+    {
+        EditMode = false;
+        _editedSpec = null;
+    }
 }

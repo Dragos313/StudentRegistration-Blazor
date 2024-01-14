@@ -4,7 +4,7 @@
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
     <DockerPublishLocally>False</DockerPublishLocally>
-    <ProjectGuid>e005d156-0198-4862-9baf-4ce620864da3</ProjectGuid>
+    <ProjectGuid>bef0f451-6cdf-489d-b1e2-f1b3668d269c</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
     <DockerServiceName>demoblazorserverapp</DockerServiceName>

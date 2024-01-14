@@ -5,7 +5,7 @@ VisualStudioVersion = 17.1.32414.318
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoBlazorServerApp", "DemoBlazorServerApp\DemoBlazorServerApp.csproj", "{53E6ADB3-B615-4DE0-9A9D-0BBB5512E98B}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{E005D156-0198-4862-9BAF-4CE620864DA3}"
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{BEF0F451-6CDF-489D-B1E2-F1B3668D269C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{53E6ADB3-B615-4DE0-9A9D-0BBB5512E98B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53E6ADB3-B615-4DE0-9A9D-0BBB5512E98B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53E6ADB3-B615-4DE0-9A9D-0BBB5512E98B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E005D156-0198-4862-9BAF-4CE620864DA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E005D156-0198-4862-9BAF-4CE620864DA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E005D156-0198-4862-9BAF-4CE620864DA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E005D156-0198-4862-9BAF-4CE620864DA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEF0F451-6CDF-489D-B1E2-F1B3668D269C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEF0F451-6CDF-489D-B1E2-F1B3668D269C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEF0F451-6CDF-489D-B1E2-F1B3668D269C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEF0F451-6CDF-489D-B1E2-F1B3668D269C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

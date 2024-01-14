@@ -12,7 +12,7 @@
 </ul>
 <div class="tab-content" id="users-tab-content">
     <div class="tab-pane fade show active" id="users" role="tabpanel" aria-labelledby="users-tab">
-        <SpecList Specs="_spec" SpecDelete="DeleteSpec" />
+        <SpecList Specs="_spec" SpecDelete="DeleteSpec" SpecModify="ModifySpec" />
     </div>
     <div class="tab-pane fade" id="add-user" role="tabpanel" aria-labelledby="add-user-tab">
         <AddSpec OnSpecCreated="FetchSpecs" />
@@ -33,6 +33,12 @@
     public async Task DeleteSpec(Specialization spec)
     {
         dbContext.Specs.Remove(spec);
+        await dbContext.SaveChangesAsync();
+        FetchSpecs();
+    }
+    public async Task ModifySpec(Specialization spec)
+    {
+        dbContext.Specs.Update(spec);
         await dbContext.SaveChangesAsync();
         FetchSpecs();
     }

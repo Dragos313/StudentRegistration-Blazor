@@ -3,29 +3,35 @@
 
 <div class="row">
     <div class="col-lg-4 pt-4">
-        <EditForm Model="_student" OnSubmit="Submit">
-            <div class="mb-3">
-                <label class="form-label">Specialization</label>
-                <select class="form-control" @bind="_student.SpecId">
-                    @foreach (var specialization in dbContext.Specs)
+        <div class="mb-3">
+            <label class="form-label">Specialization</label>
+            <select class="form-control" @bind="_student.SpecId" @oninput="HandleSpecChange">
+                <option value="">---</option>
+                @if (dbContext.Specs != null)
+                {
+                    foreach (var specialization in dbContext.Specs)
                     {
                         <option value="@specialization.SpecId">@specialization.Name</option>
                     }
-                </select>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">User</label>
-                <select class="form-control" @bind="_student.UserId">
-                    @foreach (var user in dbContext.Users)
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">User</label>
+            <select class="form-control" @bind="_student.UserId" @oninput="HandleUserChange">
+                <option value="">---</option>
+                @if (dbContext.Users != null)
+                {
+                    foreach (var user in dbContext.Users)
                     {
                         <option value="@user.UserId">@user.FullName</option>
                     }
-                </select>
-            </div>
-            <div class="mb-3">
-                <button class="btn btn-primary" type="submit">Save</button>
-            </div>
-        </EditForm>
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <button class="btn btn-primary" type="button" @onclick="Submit">Save</button>
+        </div>
     </div>
 </div>
 
@@ -35,11 +41,70 @@
 
     private StudentRegistration _student = new StudentRegistration();
 
-    public async Task Submit()
+    private void HandleSpecChange(ChangeEventArgs e)
     {
-        dbContext.Students.Add(_student);
-        await dbContext.SaveChangesAsync();
-        await OnStudentCreated.InvokeAsync();
-        _student = new StudentRegistration();
+        _student.SpecId = e.Value.ToString();
+    }
+
+    private void HandleUserChange(ChangeEventArgs e)
+    {
+        _student.UserId = e.Value.ToString();
+
+    }
+
+    private async Task Submit()
+    {
+        if (string.IsNullOrEmpty(_student.SpecId) || string.IsNullOrEmpty(_student.UserId))
+        {
+            // Handle the case when SpecId or UserId is null or empty
+            return;
+        }
+
+        var selectedSpecialization = dbContext.Specs?.FirstOrDefault(s => s.SpecId == long.Parse(_student.SpecId));
+        var selectedUser = dbContext.Users?.FirstOrDefault(u => u.UserId == long.Parse(_student.UserId));
+
+        if (selectedSpecialization != null)
+        {
+            _student.Specialization = selectedSpecialization.Name;
+            _student.Tax = selectedSpecialization.Tax;
+            _student.Years = selectedSpecialization.Years;
+        }
+
+        if (selectedUser != null)
+        {
+            _student.FullName = selectedUser.FullName;
+            _student.Years = selectedUser.Email;
+        }
+
+        _student.RegisterDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+        if (dbContext != null)
+        {
+            using (var transaction = await dbContext.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    dbContext.Students.Add(_student);
+                    await dbContext.SaveChangesAsync();
+
+                    transaction.Commit();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw; // Rethrow the exception after rollback
+                }
+            }
+        }
+
+        // Any additional logic or event handling after submission
+
+        // Reset the form or create a new instance for the next student
+        _student = new StudentRegistration
+        {
+            SpecId = "initialSpecIdValue",
+            UserId = "initialUserIdValue"
+        };
     }
 }
+

@@ -12,7 +12,7 @@
 </ul>
 <div class="tab-content" id="users-tab-content">
     <div class="tab-pane fade show active" id="users" role="tabpanel" aria-labelledby="users-tab">
-        <StudentList Students="_students" StudentDelete="DeleteUser" />
+        <StudentList Students="_students" StudentDelete="DeleteStudent" />
     </div>
     <div class="tab-pane fade" id="add-user" role="tabpanel" aria-labelledby="add-user-tab">
         <AddStudent OnStudentCreated="FetchStudents" />
@@ -30,7 +30,7 @@
 
     private void FetchStudents() => _students = dbContext.Students.ToList();
 
-    public async Task DeleteUser(StudentRegistration student)
+    public async Task DeleteStudent(StudentRegistration student)
     {
         dbContext.Students.Remove(student);
         await dbContext.SaveChangesAsync();
