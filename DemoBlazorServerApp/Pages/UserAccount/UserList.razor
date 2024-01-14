@@ -15,7 +15,7 @@
         <tbody>
             @for (int i = 0; i < Users.Count; i++)
             {
-                <UserRecord RecordIndex=(i+1) User="@Users[i]" UserDelete="UserDelete"></UserRecord>
+                <UserRecord RecordIndex=(i+1) User="@Users[i]" UserModify="UserModify" UserDelete="UserDelete"></UserRecord>
             }
         </tbody>
     </table>

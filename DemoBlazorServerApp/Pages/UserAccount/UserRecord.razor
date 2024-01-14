@@ -1,14 +1,42 @@
 ﻿@using DemoBlazorServerApp.Models
-<tr>
-    <td>@RecordIndex</td>
-    <td>@User.FullName</td>
-    <td>@User.Email</td>
-    <td>
-        <a href="javascript:void(0)" @onclick="(async () => await UserDelete.InvokeAsync(User))">
-            <i class="oi oi-trash"></i>
-        </a>
-    </td>
-</tr>
+@if (!EditMode)
+{
+    <tr>
+        <td>@RecordIndex</td>
+        <td>@User.FullName</td>
+        <td>@User.Email</td>
+        <td>
+            <button class="btn btn-link" @onclick="EnableEditMode">
+                <i class="oi oi-pencil"></i>
+            </button>
+        </td>
+        <td>
+            <button class="btn btn-link" @onclick="(async () => await UserDelete.InvokeAsync(User))">
+                <i class="oi oi-trash"></i>
+            </button>
+        </td>
+    </tr>
+}
+else
+{
+    <tr>
+        <td>@RecordIndex</td>
+        <td><input type="text" @bind="_editedUser.FullName" class="form-control" /></td>
+        <td><input type="text" @bind="_editedUser.Email" class="form-control" /></td>
+        <td><input type="password" @bind="_editedUser.Password" class="form-control" /></td>
+        <td>
+            <button class="btn btn-link" @onclick="SaveChanges">
+                <i class="oi oi-check"></i>
+            </button>
+        </td>
+        <td>
+            <button class="btn btn-link" @onclick="CancelEdit">
+                <i class="oi oi-x"></i>
+            </button>
+        </td>
+    </tr>
+}
+
 
 @code {
     [Parameter]
@@ -19,4 +47,38 @@
 
     [Parameter]
     public EventCallback<User> UserDelete { get; set; }
+
+    [Parameter]
+    public EventCallback<User> UserModify { get; set; }
+
+    private bool EditMode { get; set; } = false;
+
+    private User _editedUser;
+
+    private void EnableEditMode()
+    {
+        _editedUser = new User
+            {
+                FullName = User.FullName,
+                Email = User.Email,
+                Password = User.Password
+            };
+        EditMode = true;
+    }
+    private void SaveChanges()
+    {
+        User.FullName = _editedUser.FullName;
+        User.Email = _editedUser.Email;
+        User.Password = _editedUser.Password;
+
+        UserModify.InvokeAsync(User);
+
+        EditMode = false;
+        _editedUser = null;
+    }
+    private void CancelEdit()
+    {
+        EditMode = false;
+        _editedUser = null;
+    }
 }
